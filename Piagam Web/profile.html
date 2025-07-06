@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .certificate-card {
+            transition: all 0.3s ease;
+        }
+        .certificate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-white text-xl font-bold">Portfolio</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="profile.html" class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 bg-white bg-opacity-20">Profile</a>
+                        <a href="achievement.html" class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Achievement</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-white hover:text-gray-200 focus:outline-none focus:text-gray-200" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="profile.html" class="text-white hover:text-gray-200 block px-3 py-2 rounded-md text-base font-medium">Profile</a>
+                <a href="achievement.html" class="text-white hover:text-gray-200 block px-3 py-2 rounded-md text-base font-medium">Achievement</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <div class="mb-8 fade-in">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <span class="text-gray-500 text-sm">Profile</span>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- Profile Page -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Profile Card -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-lg p-6 certificate-card fade-in">
+                    <div class="text-center">
+                        <div class="overflow-hidden rounded-full mx-auto mb-4 w-28 h-28">
+                            <img src="image/profile.jpg" alt="Profile Picture" class="object-cover w-full h-full">
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800 mb-2">Glenferdinza Aghis A. R. E</h2>
+                        <p class="text-gray-600 mb-4">Machine Learning Engineer</p>
+                        <div class="flex justify-center space-x-4">
+                            <a href="#" class="text-blue-500 hover:text-blue-700 transition-colors">
+                                <i class="fab fa-linkedin text-xl"></i>
+                            </a>
+                            <a href="#" class="text-gray-800 hover:text-gray-600 transition-colors">
+                                <i class="fab fa-github text-xl"></i>
+                            </a>
+                            <a href="#" class="text-blue-400 hover:text-blue-600 transition-colors">
+                                <i class="fab fa-instagram text-xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Me Section -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-lg p-6 certificate-card fade-in">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-user-circle text-purple-500 mr-2"></i>
+                        Tentang Saya
+                    </h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">
+                        Saya adalah seorang mahasiswa Teknologi Informasi yang memiliki ketertarikan tinggi pada pengembangan solusi berbasis data dan teknologi, khususnya di bidang machine learning. Saya juga memiliki keahlian dalam pemrosesan data, data mining, dan pengembangan model machine learning menggunakan Python.
+                    </p>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Saya memiliki semangat untuk terus belajar dan menguji kemampuan melalui berbagai riset dan kompetisi data nasional. Berkomitmen untuk menciptakan dampak nyata bagi masyarakat melalui pendekatan teknologi yang terukur dan manusiawi.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">
+                                <i class="fas fa-code text-blue-500 mr-2"></i>
+                                Keahlian Teknis
+                            </h4>
+                            <ul class="space-y-2">
+                                <li class="flex items-center text-gray-600">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Data Mining & Processing
+                                </li>
+                                <li class="flex items-center text-gray-600">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Python & SQL
+                                </li>
+                                <li class="flex items-center text-gray-600">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Machine Learning
+                                </li>
+                                <li class="flex items-center text-gray-600">
+                                    <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                    Web Development (PHP) + Tailwind CSS
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">
+                                <i class="fas fa-graduation-cap text-purple-500 mr-2"></i>
+                                Pendidikan
+                            </h4>
+                            <div class="text-gray-600">
+                                <p class="font-medium">S1 - Teknologi Informasi</p>
+                                <p class="text-sm">Universitas Negeri Yogyakarta</p>
+                                <p class="text-sm">2024 - Sekarang</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Kontak</h3>
+                    <div class="space-y-2">
+                        <p class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            glenferdinza21@gmail.com
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-phone mr-2"></i>
+                            +62 812-2549-5018
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            Temanggung, Indonesia
+                        </p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Media Sosial</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.linkedin.com/in/glenferdinza-efian" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-2xl"></i>
+                        </a>
+                        <a href="https://github.com/Glenferdinza" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-github text-2xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/ghisssyaaaa" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-instagram text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Tentang Website</h3>
+                    <p class="text-gray-300">
+                        Website portfolio untuk menampilkan pencapaian dan piagam kejuaraan yang telah diraih.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">© 2025 Glen's Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                const elements = document.querySelectorAll('.fade-in');
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('show');
+                    }, index * 100);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>

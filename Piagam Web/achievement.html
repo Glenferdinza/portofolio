@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement - Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .certificate-card {
+            transition: all 0.3s ease;
+        }
+        .certificate-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .certificate-image {
+            max-width: 100%;
+            max-height: 500px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        .certificate-placeholder {
+            text-center;
+            color: #9CA3AF;
+            padding: 2rem;
+        }
+        
+        /* Auto-scroll certificate display */
+        .certificate-display-container {
+            position: relative;
+            overflow: hidden;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .certificate-slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            width: 100%;
+        }
+        
+        .certificate-slide {
+            min-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .certificate-slide img {
+            max-height: 400px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+        
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .nav-button:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .nav-button.prev {
+            left: 20px;
+        }
+        
+        .nav-button.next {
+            right: 20px;
+        }
+        
+        .progress-bar {
+            display: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            transition: width 0.05s linear;
+        }
+        
+        .certificate-indicators {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1rem;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active {
+            background: #667eea;
+            transform: scale(1.2);
+        }
+        
+        /* Responsive grid layout */
+        .certificate-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .certificate-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .nav-button {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .nav-button.prev {
+                left: 10px;
+            }
+            
+            .nav-button.next {
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="gradient-bg shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <span class="text-white text-xl font-bold">Portfolio</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="profile.html" class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200">Profile</a>
+                        <a href="achievement.html" class="nav-link text-white hover:text-gray-200 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 bg-white bg-opacity-20">Achievement</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button class="text-white hover:text-gray-200 focus:outline-none focus:text-gray-200" onclick="toggleMobileMenu()">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="profile.html" class="text-white hover:text-gray-200 block px-3 py-2 rounded-md text-base font-medium">Profile</a>
+                <a href="achievement.html" class="text-white hover:text-gray-200 block px-3 py-2 rounded-md text-base font-medium">Achievement</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Breadcrumb -->
+        <div class="mb-8 fade-in">
+            <nav class="flex" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    <li class="inline-flex items-center">
+                        <a href="profile.html" class="text-gray-500 text-sm hover:text-gray-700">Profile</a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <i class="fas fa-chevron-right text-gray-400 text-sm mx-1"></i>
+                            <span class="text-gray-500 text-sm">Achievement</span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- Achievement Page -->
+        <div class="text-center mb-8 fade-in">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">Piagam & Penghargaan</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">
+                Koleksi piagam dan penghargaan yang telah saya raih dalam berbagai kompetisi dan prestasi akademik
+            </p>
+        </div>
+
+        <!-- Certificate Auto-Scroll Display -->
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8 fade-in">
+            <div class="certificate-display-container">
+                <button class="nav-button prev" onclick="previousCertificate()">
+                    <i class="fas fa-chevron-left text-gray-600"></i>
+                </button>
+                
+                <div class="certificate-slider" id="certificate-slider">
+                    <!-- Slides will be populated by JavaScript -->
+                </div>
+                
+                <button class="nav-button next" onclick="nextCertificate()">
+                    <i class="fas fa-chevron-right text-gray-600"></i>
+                </button>
+            </div>
+            
+            <div class="certificate-indicators" id="certificate-indicators">
+                <!-- Indicators will be populated by JavaScript -->
+            </div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+        </div>
+
+        <!-- Certificate Grid -->
+        <div class="certificate-grid">
+            <div class="bg-white rounded-xl shadow-lg p-6 certificate-card fade-in cursor-pointer" onclick="goToCertificate('fisika_glen_nsc.html')">
+                <img src="image/piag_Fisika - NSC 2025_page-0001.jpg" class="rounded-lg w-full h-48 object-cover mb-4" alt="Piagam Olimpiade Fisika NSC">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Olimpiade Fisika NSC</h4>
+                <p class="text-sm text-gray-600 mb-3">National Science Competition sub division physics Tingkat Nasional</p>
+                <span class="inline-block bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">Fisika</span>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 certificate-card fade-in cursor-pointer" onclick="goToCertificate('fisika_glen_kssi.html')">
+                <img src="image/piag_Fisika - KSSI 2025_page-0001.jpg" class="rounded-lg w-full h-48 object-cover mb-4" alt="Piagam Olimpiade Fisika KSSI">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Olimpiade Fisika KSSI</h4>
+                <p class="text-sm text-gray-600 mb-3">Kompetisi Sains Se-Indonesia bidang Fisika Tingkat Nasional</p>
+                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">Fisika</span>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 certificate-card fade-in cursor-pointer" onclick="goToCertificate('unity.html')">
+                <img src="image/unity_data_mining_page-0001.jpg" class="rounded-lg w-full h-48 object-cover mb-4" alt="Piagam Kompetisi UNITY UNY #13 bidang Data Mining">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Lomba Data Mining</h4>
+                <p class="text-sm text-gray-600 mb-3">Kompetisi UNITY UNY #13 Tingkat Nasional</p>
+                <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Data Mining</span>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 certificate-card fade-in cursor-pointer" onclick="goToCertificate('cendekia.html')">
+                <img src="image/cendekia.jpg" class="rounded-lg w-full h-48 object-cover mb-4" alt="Piagam Olimpiade Cendekia Natural Science Tahun 2025 bidang Fisika">
+                <h4 class="text-lg font-semibold text-gray-800 mb-2">Olimpiade Cendekia Natural Science Tahun 2025 bidang Fisika</h4>
+                <p class="text-sm text-gray-600 mb-3">Tingkat Nasional</p>
+                <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">Fisika</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Kontak</h3>
+                    <div class="space-y-2">
+                        <p class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            glenferdinza21@gmail.com
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-phone mr-2"></i>
+                            +62 812-2549-5018  
+                        </p>
+                        <p class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            Temanggung, Indonesia
+                        </p>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Media Sosial</h3>
+                    <div class="flex space-x-4">
+                        <a href="https://www.linkedin.com/in/glenferdinza-efian" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-linkedin text-2xl"></i>
+                        </a>
+                        <a href="https://github.com/Glenferdinza" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-github text-2xl"></i>
+                        </a>
+                        <a href="https://www.instagram.com/ghisssyaaaa" class="text-gray-300 hover:text-white transition-colors">
+                            <i class="fab fa-instagram text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Tentang Website</h3>
+                    <p class="text-gray-300">
+                        Website portfolio untuk menampilkan piagam dan penghargaan yang telah diraih.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-400">© 2025 Glen's Portfolio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Certificate data dengan path gambar
+        const certificates = [
+            {
+                title: "Piagam Olimpiade NSC",
+                name: "Piagam Olimpiade Matematika NSC",
+                date: "23 Maret 2025",
+                description: "Piagam penghargaan atas prestasi dalam kompetisi Olimpiade Matematika tingkat nasional, menunjukkan kemampuan dalam pemecahan masalah matematika yang kompleks.",
+                image: "image/piag_Fisika - NSC 2025_page-0001.jpg" 
+            },
+            {
+                title: "Piagam Olimpiade Fisika Regional",
+                name: "Piagam Olimpiade Fisika Regional", 
+                date: "16 Februari 2025",
+                description: "Penghargaan dalam kompetisi Olimpiade Fisika tingkat nasional, menunjukkan pemahaman mendalam tentang konsep-konsep fisika dan kemampuan analisis yang baik.",
+                image: "image/piag_Fisika - KSSI 2025_page-0001.jpg" 
+            },
+            {
+                title: "Piagam Kompetisi UNITY UNY #13 Bidang Data Mining",
+                name: "Piagam Kompetisi UNITY UNY #13 Bidang Data Mining",
+                date: "1 Juni 2025", 
+                description: "Penghargaan dalam kompetisi data mining tingkat nasional, menunjukkan kemampuan dalam ekstraksi informasi dari data besar dan analisis data yang mendalam.",
+                image: "image/unity_data_mining_page-0001.jpg" 
+            },
+            {
+                title: "Piagam Olimpiade Cendekia Natural Science Competition 2025",
+                name: "Piagam Olimpiade Cendekia Natural Science Competition 2025",
+                date: "16 - 17 Mei 2025",
+                description: "Penghargaan dalam kompetisi Olimpiade Fisika tingkat nasional dengan nama Olimpiade Cendekia Natural Science Competition 2025, menunjukkan kemampuan analisis dan pemahaman yang mendalam tentang konsep-konsep fisika dan kemampuan berpikir kritis yang baik.",
+                image: "image/cendekia.jpg" 
+            }
+        ];
+
+        let currentCertificateIndex = 0;
+        let autoScrollInterval;
+        let progressInterval;
+        let progressStartTime;
+        const autoScrollDuration = 5000; // Ubah nilai ini untuk mengubah durasi (dalam milliseconds)
+
+        // Initialize certificate display
+        function initializeCertificateDisplay() {
+            const slider = document.getElementById('certificate-slider');
+            const indicators = document.getElementById('certificate-indicators');
+            
+            // Create slides
+            certificates.forEach((cert, index) => {
+                const slide = document.createElement('div');
+                slide.className = 'certificate-slide';
+                slide.innerHTML = `
+                    <img src="${cert.image}" alt="${cert.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="certificate-placeholder" style="display: none;">
+                        <i class="fas fa-medal text-6xl text-gray-400 mb-4"></i>
+                        <p class="text-gray-500">${cert.title}</p>
+                    </div>
+                    <div class="text-center mt-6">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">${cert.name}</h3>
+                        <p class="text-gray-600 mb-2">Tanggal Diperoleh: ${cert.date}</p>
+                        <p class="text-gray-700 max-w-2xl mx-auto">${cert.description}</p>
+                    </div>
+                `;
+                slider.appendChild(slide);
+                
+                // Create indicator
+                const indicator = document.createElement('div');
+                indicator.className = `indicator ${index === 0 ? 'active' : ''}`;
+                indicator.onclick = () => goToSlide(index);
+                indicators.appendChild(indicator);
+            });
+            
+            startAutoScroll();
+        }
+
+        // Navigate to specific slide
+        function goToSlide(index) {
+            currentCertificateIndex = index;
+            updateSlider();
+            resetAutoScroll();
+        }
+
+        // Update slider position
+        function updateSlider() {
+            const slider = document.getElementById('certificate-slider');
+            const indicators = document.querySelectorAll('.indicator');
+            
+            slider.style.transform = `translateX(-${currentCertificateIndex * 100}%)`;
+            
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentCertificateIndex);
+            });
+        }
+
+        // Navigation functions
+        function nextCertificate() {
+            currentCertificateIndex = (currentCertificateIndex + 1) % certificates.length;
+            updateSlider();
+            resetAutoScroll();
+        }
+
+        function previousCertificate() {
+            currentCertificateIndex = (currentCertificateIndex - 1 + certificates.length) % certificates.length;
+            updateSlider();
+            resetAutoScroll();
+        }
+
+        // Auto-scroll functionality
+        function startAutoScroll() {
+            autoScrollInterval = setInterval(() => {
+                nextCertificate();
+            }, autoScrollDuration);
+            
+            startProgressBar();
+        }
+
+        function resetAutoScroll() {
+            clearInterval(autoScrollInterval);
+            clearInterval(progressInterval);
+            updateProgressBar(0);
+            startAutoScroll();
+        }
+
+        function startProgressBar() {
+            progressStartTime = Date.now();
+            
+            progressInterval = setInterval(() => {
+                const elapsed = Date.now() - progressStartTime;
+                const progress = Math.min((elapsed / autoScrollDuration) * 100, 100);
+                
+                updateProgressBar(progress);
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                }
+            }, 16); // Update approximately 60 times per second for smooth animation
+        }
+
+        function updateProgressBar(progress) {
+            const progressFill = document.getElementById('progress-fill');
+            progressFill.style.width = `${progress}%`;
+        }
+
+        // Navigate to certificate detail page
+        function goToCertificate(page) {
+            window.location.href = page;
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // Pause auto-scroll on hover
+        function pauseAutoScroll() {
+            clearInterval(autoScrollInterval);
+            clearInterval(progressInterval);
+        }
+
+        function resumeAutoScroll() {
+            startAutoScroll();
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCertificateDisplay();
+            
+            // Add hover events to pause auto-scroll
+            const displayContainer = document.querySelector('.certificate-display-container');
+            displayContainer.addEventListener('mouseenter', pauseAutoScroll);
+            displayContainer.addEventListener('mouseleave', resumeAutoScroll);
+            
+            setTimeout(() => {
+                const elements = document.querySelectorAll('.fade-in');
+                elements.forEach((el, index) => {
+                    setTimeout(() => {
+                        el.classList.add('show');
+                    }, index * 100);
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
+
